@@ -4,7 +4,10 @@ const botonesCerrarCarrito = document.querySelectorAll('[data-accion ="cerrar-ca
 const ventanaCarrito = document.getElementById("carrito");
 const btnAgregarcarrito = document.getElementById("agregar-al-carrito");
 const producto = document.getElementById("producto");
-const formatearMoneda = new Intl.NumberFormat('es-MX', {style: 'currency', currency: 'EUR'});
+const formatearMoneda = new Intl.NumberFormat("es-MX", {
+  style: "currency",
+  currency: "USD",
+});
 const carrito = [];
 
 const rendercarrito = () => {
@@ -13,11 +16,13 @@ const rendercarrito = () => {
   const productosAnteriores = ventanaCarrito.querySelectorAll(".carrito__producto");
 
   productosAnteriores.forEach((producto) => producto.remove());
+  let total = 0;
   carrito.forEach((productoCarrito) => {
     data.productos.forEach((productoBaseDatos) => {
       if (productoBaseDatos.id === productoCarrito.id) {
         productoCarrito.precio = productoBaseDatos.precio;
-       
+
+        total += productoCarrito.precio * productoCarrito.cantidad;
       }
     });
     let thumbSrc = producto.querySelectorAll(".producto__thumb-img")[0].src;
@@ -32,7 +37,9 @@ const rendercarrito = () => {
 								<img src="${thumbSrc}" alt="" class="carrito__thumb" />
 								<div>
 									<p class="carrito__producto-nombre">
-										<span class="carrito__producto-cantidad">${productoCarrito.cantidad} x </span>${productoCarrito.nombre}
+										<span class="carrito__producto-cantidad">${productoCarrito.cantidad} x </span>${
+      productoCarrito.nombre
+    }
 									</p>
 									<p class="carrito__producto-propiedades">
 										Tamaño:<span>${productoCarrito.tamaño}</span> Color:<span>${productoCarrito.color}</span>
@@ -53,7 +60,7 @@ const rendercarrito = () => {
 										/>
 									</svg>
 								</button>
-								<p class="carrito__producto-precio"> ${formatearMoneda.format(productoCarrito.precio)}</p>
+								<p class="carrito__producto-precio"> ${formatearMoneda.format(productoCarrito.precio * productoCarrito.cantidad)}</p>
 							</div>
     `;
     const itemCarrito = document.createElement("div");
@@ -61,7 +68,7 @@ const rendercarrito = () => {
     itemCarrito.innerHTML = plantilla;
 
     ventanaCarrito.querySelector(".carrito__body").appendChild(itemCarrito);
-    console.log(carrito)
+    console.log(carrito);
     console.log(productoCarrito.precio);
   });
 };
@@ -87,8 +94,29 @@ btnAgregarcarrito.addEventListener("click", (e) => {
 
   if (carrito.length > 0) {
     let productoEncarrito = false;
-    
-  }else {
+
+    carrito.forEach((item) => {
+      if (
+        item.id === id &&
+        item.nombre === nombre &&
+        item.color === color &&
+        item.tamaño === tamaño
+      ) {
+        item.cantidad += cantidad;
+        productoEncarrito = true;
+      }
+    });
+
+    if (!productoEncarrito) {
+      carrito.push({
+        id: id,
+        nombre: nombre,
+        cantidad: cantidad,
+        color: color,
+        tamaño: tamaño,
+      });
+    }
+  } else {
     carrito.push({
       id: id,
       nombre: nombre,
@@ -97,5 +125,4 @@ btnAgregarcarrito.addEventListener("click", (e) => {
       tamaño: tamaño,
     });
   }
-
 });
