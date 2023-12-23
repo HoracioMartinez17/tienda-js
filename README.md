@@ -54,7 +54,7 @@ La carpeta `src` contiene los siguientes archivos:
 
 ## Instrucciones de Ejecución
 
-1. Para visitar la web, por favor sigue este enlace: [Tienda de Zapatillas](https://github.com/tu-usuario/Tienda-de-Zapatillas)
+1. Para visitar la web, por favor sigue este enlace: [Tienda de Zapatillas](https://horaciomartinez17.github.io/tienda-js/)
 
 2. Clona este repositorio en tu máquina local.
 
